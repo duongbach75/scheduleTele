@@ -1,0 +1,89 @@
+#App name
+
+##---------This is the configuable file---------#
+spring:
+  datasource:
+    url: jdbc:sqlserver://10.0.101.111:1433;databaseName=hoSoPMMC
+    username: sa
+    password: 1Qaz2wsx
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+#spring:
+#  datasource:
+#    url: jdbc:sqlserver://172.16.30.21:1433;databaseName=DongBoHoSo
+#    username: sa
+#    password: Haiduong@2019
+#    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+
+# JPA-Hibernate
+  jpa:
+    hibernate:
+      naming:
+        strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+    time-zone: Asia/Ho_Chi_Minh
+      
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+server:
+  port: 9715
+  
+url_getToken: https://api.ngsp.gov.vn/token
+#product key
+clienId: A7cloLLW93mOdQMW7kx44_wnsywa
+secretId: A7sDVzrnjgb64QSevqlNSUyUOh8a
+
+#sanbox key
+#clienId: Ec8N4benfait8igEdCfsdyetO24a
+#secretId: bEFsf6HKr7MF6cU8UmQAP7xaWZAa
+url_getInfo: https://api.ngsp.gov.vn/apiCapMSDVQHNS/1.0
+
+url_phbh: http://lienthongso.qlvt.mt.gov.vn/oep-dvc-ws-portlet/restapi/
+user_phbh: ws@mt.gov.vn
+pass_phbh: Ws@12345
+organizationID: 243573
+
+url_chitietDN: https://api.ngsp.gov.vn/apiCSDLDKDN/1.0/chiTietDoanhNghiep?msdn=
+url_dkkd: https://api.ngsp.gov.vn/apiCSDLDKDN/1.0
+url_dkkd_chiTiet: https://api.ngsp.gov.vn/apiCSDLDKDN/1.0
+appId_DKKD: 8
+
+#so ngay muon lay lui lai
+time: -5
+
+#file log product dev TrangBtt
+#fileLog: E:\Project_Savis_2020\LGSP\DKDN\DKKD_NEW\
+
+url_getTokenDTNN: https://lgsp.mpi.gov.vn/token
+clienIdDTNN: 4QBmMOjtixH_OSIoRbA5fy4PJcsa
+secretIdDTNN: xKnlb9Sep8xQanvQgAdkDu1NgS8a
+url_DTNN: https://lgsp.mpi.gov.vn/getDanhSachHoSo/1.0/
+unitId: 2C827459-F944-4AC7-AAF8-CD9FF70B2041
+
+url_hny: https://qlhanhnghekcb.gov.vn:8089/api/1.0.0
+ma_tinh: 84
+apiKey_HNY: eyJ4NXQiOiJOVGRtWmpNNFpEazNOalkwWXpjNU1tWm1PRGd3TVRFM01XWXdOREU1TVdSbFpEZzROemM0WkE9PSIsImtpZCI6ImdhdGV3YXlfY2VydGlmaWNhdGVfYWxpYXMiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhcHBsaWNhdGlvbiI6eyJvd25lciI6ImFkbWluIiwidGllclF1b3RhVHlwZSI6bnVsbCwidGllciI6IlVubGltaXRlZCIsIm5hbWUiOiJEZWZhdWx0QXBwbGljYXRpb24iLCJpZCI6MSwidXVpZCI6IjZjYTg5NWYwLWE0ZmItNDY0Yy04MzBkLTJmNWNlOGU4ZGY5MCJ9LCJpc3MiOiJodHRwczpcL1wvNDIuMTEyLjE4LjQwOjkwMDFcL29hdXRoMlwvdG9rZW4iLCJ0aWVySW5mbyI6eyJVbmxpbWl0ZWQiOnsidGllclF1b3RhVHlwZSI6InJlcXVlc3RDb3VudCIsImdyYXBoUUxNYXhDb21wbGV4aXR5IjowLCJncmFwaFFMTWF4RGVwdGgiOjAsInN0b3BPblF1b3RhUmVhY2giOnRydWUsInNwaWtlQXJyZXN0TGltaXQiOjAsInNwaWtlQXJyZXN0VW5pdCI6bnVsbH19LCJrZXl0eXBlIjoiUFJPRFVDVElPTiIsInBlcm1pdHRlZFJlZmVyZXIiOiIiLCJzdWJzY3JpYmVkQVBJcyI6W3sic3Vic2NyaWJlclRlbmFudERvbWFpbiI6ImNhcmJvbi5zdXBlciIsIm5hbWUiOiJSZXN0VGVzdCIsImNvbnRleHQiOiJcL3Jlc3R0ZXN0XC8xLjAiLCJwdWJsaXNoZXIiOiJhZG1pbiIsInZlcnNpb24iOiIxLjAiLCJzdWJzY3JpcHRpb25UaWVyIjoiVW5saW1pdGVkIn0seyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IkxHU1AtSE5ZIiwiY29udGV4dCI6IlwvYXBpXC8xLjAuMCIsInB1Ymxpc2hlciI6ImFkbWluIiwidmVyc2lvbiI6IjEuMC4wIiwic3Vic2NyaXB0aW9uVGllciI6IlVubGltaXRlZCJ9XSwicGVybWl0dGVkSVAiOiIiLCJpYXQiOjE2MTAwOTA1NDEsImp0aSI6ImE3MGY4NzFmLTBmMzMtNGUxYi1hNGQxLWZlMTI5Y2Q4OGI5ZiJ9.bwvQtye9Uky9Hu8j485LBI-y2rBYlU11tuzNpEfp8JLkuZHEbgvUoNlZa3qr-nAUNsWg7KxTbOTdb-oaUEaZdVtLsuGcIcYp6iKVmwmZBg3Yp6cNNDi1US4HyKtqubZD9LTVbB5jH9eV5aLNg6cG5auYJMPTiD_Mo5W22EKgeMdDlP4cYGD3k6h9Kvm2_w-M4OHLMXhOjv7jUUMNqKobJ62wprHHnBk2L6JDdL_iDjWlETATNaI_2U7NS4aU7Jvngc1GMGtcP0d4H87FsGJhQRhWMusf3SzjN4sb3tJx6fBLOErgqGW2MO0pWSYUZhgwMxcUPwweYE2XayM00Vo_6g==
+appId_HNY: 4
+ghiChuCSKCB: Dong_bo_CSKCB
+ghiChuCCHN: Dong_bo_CCHN
+
+url_getTokenGPLX: http://123.25.61.233:8077/token
+clienIdGPLX: lgsp
+secretIdGPLX: lgsp@123
+url_GPLX: http://123.25.61.233:8077/api
+#file log product dev BachDH
+#fileLog: F:\HaiDuong\code\dmHS\
+
+#file log product dev 
+fileLog: E:\setup\HaiDuong\DongBoHS
+
+#file log product
+#fileLog: C:\Setup\DongBoHoSo\log\
+
