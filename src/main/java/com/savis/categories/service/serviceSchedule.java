@@ -24,8 +24,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 import com.savis.categories.entity.*;
+import com.savis.categories.telegram.MyAmazingBot;
 import com.savis.categories.common.*;
 @Service
 @Configuration
@@ -123,7 +126,7 @@ public class serviceSchedule {
 		}
 		return "";
 	}
-	boolean isWithinRange(Date testDate,Date startDate,Date endDate) {
+	public boolean isWithinRange(Date testDate,Date startDate,Date endDate) {
 		   return !(testDate.before(startDate) || testDate.after(endDate));
 		}
 	public ResponseEntity<String> callAPITele(String url) {
@@ -134,5 +137,43 @@ public class serviceSchedule {
 		return restTemplate.exchange(tele, HttpMethod.GET, request, String.class);
 
 	}
-	
+	@Bean
+	public void runBot() {
+
+        // Initialize Api Context
+        ApiContextInitializer.init();
+
+        // Instantiate Telegram Bots API
+        TelegramBotsApi botsApi = new TelegramBotsApi();
+
+        // Register our bot
+        try {
+            botsApi.registerBot(new MyAmazingBot());
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+	    
+	}
+	public String schedule() {
+		 try {
+			List<schedule> listBooks = readExcel("G:\\ThoiKhoaBieuSinhVien.xls");
+			for (schedule schedule : listBooks) {
+				Date today= new Date();
+				Date from =UtilsDate.str2date(schedule.getDay().split("-")[0], "dd/MM/yyyy");
+				Date to =UtilsDate.str2date(schedule.getDay().split("-")[1], "dd/MM/yyyy");
+				Calendar c = Calendar.getInstance();
+				c.setTime(today);
+				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+				if(isWithinRange(today, from, to)==true && String.valueOf(dayOfWeek).equals(schedule.getNumber())) {
+					return "Ca học: "+schedule.getTime() +" Môn học: "+schedule.getName()+" Phòng học "+schedule.getRoom();
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Lỗi rồi";
+		}
+		return "Không có ca học nào";
+		
+	}
 }
