@@ -1,5 +1,3 @@
-spring.profiles: dev
-spring.profiles.include: dev
----
-spring.profiles: prod
-spring.profiles.include: prod
+api:
+  document:
+    ThoiKhoaBieuSinhVien: /opt/tomcat/webapps/ROOT/WEB-INF/classes/ThoiKhoaBieuSinhVien.xlsx
