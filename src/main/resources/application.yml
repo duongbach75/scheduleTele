@@ -1,3 +1,1 @@
-api:
-  document:
-    ThoiKhoaBieuSinhVien: /opt/tomcat/webapps/ROOT/WEB-INF/classes/ThoiKhoaBieuSinhVien.xlsx
+ThoiKhoaBieuSinhVien: /opt/tomcat/webapps/ROOT/WEB-INF/classes/ThoiKhoaBieuSinhVien.xlsx

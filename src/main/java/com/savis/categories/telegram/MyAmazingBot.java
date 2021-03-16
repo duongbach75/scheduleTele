@@ -21,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
@@ -42,6 +43,8 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 	List<String> list= new ArrayList<String>();
 	List<String> blacklist= new ArrayList<String>();
 	Random randomGenerator= new Random();
+	@Value("${ThoiKhoaBieuSinhVien}")
+	String thoiKhoaBieuSinhVien;
 	@Override
 	public void onUpdateReceived(Update update) {
 		list.add("Thứ 2 được không?");
@@ -74,20 +77,25 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-			} else if (message_text.equals("/schedule")) {
+			} else if (message_text.equals("schedule")) {
 				SendMessage message=null;
+				List<String> list = new ArrayList<String>();
 				try {
-					message = new SendMessage() // Create a message object object
-							.setChatId(chat_id).setText(schedule());
+					list = schedule();
 				} catch (URISyntaxException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				for (String string : list) {
+					message = new SendMessage() // Create a message object object
+							.setChatId(chat_id).setText(string);
 				try {
 					sendMessage(message); // Sending our message object to user
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
+				}
+					
 			} else if (message_text.indexOf("Niệm")!=-1) {
 				SendMessage message = new SendMessage() // Create a message object object
 						.setChatId(chat_id).setText("Trưởng phòng Cloud Viettel");
@@ -104,7 +112,15 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-			} else if (message_text.equals("/bia")) {
+			}else if (message_text.indexOf("bánh mì")!=-1) {
+				SendMessage message = new SendMessage() // Create a message object object
+						.setChatId(chat_id).setText("Có thằng nào đi ăn bánh mì không");
+				try {
+					sendMessage(message); // Sending our message object to user
+				} catch (TelegramApiException e) {
+					e.printStackTrace();
+				}
+			} else if (message_text.equals("bia")) {
 
 				
 				SendMessage message = new SendMessage() // Create a message object object
@@ -114,7 +130,7 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-			} else if (message_text.equals("/khong")) {
+			} else if (message_text.equals("khong")) {
 				SendMessage message = new SendMessage() // Create a message object object
 						.setChatId(chat_id).setText("Thế mày rảnh hôm nào? "+list.get(randomGenerator.nextInt(list.size())));
 				try {
@@ -122,9 +138,9 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 				} catch (TelegramApiException e) {
 					e.printStackTrace();
 				}
-			} else if (message_text.equals("/ok")) {
+			} else if (message_text.equals("ok")) {
 				SendMessage message = new SendMessage() // Create a message object object
-						.setChatId(chat_id).setText("Chốt nhá");
+						.setChatId(chat_id).setText("ok cái đ!t mẹ m");
 				try {
 					sendMessage(message); // Sending our message object to user
 				} catch (TelegramApiException e) {
@@ -154,25 +170,7 @@ public class MyAmazingBot extends TelegramLongPollingBot {
 				}
 			} 
 		} else if (update.hasMessage() && update.getMessage().hasPhoto()) {
-			// Message contains photo
-			// Set variables
-			long chat_id = update.getMessage().getChatId();
-
-			List<PhotoSize> photos = update.getMessage().getPhoto();
-			String f_id = photos.stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst()
-					.orElse(null).getFileId();
-			int f_width = photos.stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst()
-					.orElse(null).getWidth();
-			int f_height = photos.stream().sorted(Comparator.comparing(PhotoSize::getFileSize).reversed()).findFirst()
-					.orElse(null).getHeight();
-			String caption = "file_id: " + f_id + "\nwidth: " + Integer.toString(f_width) + "\nheight: "
-					+ Integer.toString(f_height);
-			SendPhoto msg = new SendPhoto().setChatId(chat_id).setPhoto(f_id).setCaption(caption);
-			try {
-				sendPhoto(msg); // Call method to send the message
-			} catch (TelegramApiException e) {
-				e.printStackTrace();
-			}
+			
 		}
 	}
 
@@ -195,9 +193,11 @@ public boolean checklist(String message_text) {
 	return true;
 	
 }
-	public String schedule() throws URISyntaxException {
+	public List<String> schedule() throws URISyntaxException {
+		List<String> sche=new ArrayList<String>();
 		try {
 			List<schedule> listBooks = readExcel("/opt/ThoiKhoaBieuSinhVien.xls");
+			
 			for (schedule schedule : listBooks) {
 				Date today = new Date();
 				Date from = UtilsDate.str2date(schedule.getDay().split("-")[0], "dd/MM/yyyy");
@@ -206,16 +206,18 @@ public boolean checklist(String message_text) {
 				c.setTime(today);
 				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 				if (isWithinRange(today, from, to) == true && String.valueOf(dayOfWeek).equals(schedule.getNumber())) {
-					return "Ca học: " + schedule.getTime() + " Môn học: " + schedule.getName() + " Phòng học "
-							+ schedule.getRoom()+". Kính mong được gặp các sếp trên giảng đường";
+					sche.add( "Ca học: " + schedule.getTime() + " Môn học: " + schedule.getName() + " Phòng học "
+							+ schedule.getRoom()+". Kính mong được gặp các sếp trên giảng đường");
 				}
 			}
+			if(sche.isEmpty()) sche.add("Không có lịch học các sếp ạ");
+			return sche;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "Lỗi rồi";
+			return sche;
 		}
-		return "Không có ca học nào";
+		
 
 	}
 
